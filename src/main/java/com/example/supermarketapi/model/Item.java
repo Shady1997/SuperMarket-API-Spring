@@ -19,11 +19,12 @@ public class Item extends BaseEntity {
     @NotBlank(message = "name can not be blank")
     @Size(max = 64)
     private String name;
-    @NotNull
 
+    @NotNull
     @DecimalMin(value = "0.01", message = "price cant be less than 0.01")
     @DecimalMax(value = "9999.99", message = "price cant be more than 9999.99")
     private Double price;
+
     @NotNull
     @Enumerated
     private ItemType type;

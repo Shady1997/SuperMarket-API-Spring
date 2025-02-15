@@ -25,7 +25,7 @@ public class PurchaseController {
     }
 
     @PostMapping
-    public ResponseEntity<PurchaseDTO> buyItemsFromSupermarket(@RequestParam String supermarketId, @RequestParam List<String> itemIDs,
+    public ResponseEntity<PurchaseDTO> buyItemsFromSupermarket(@RequestBody String supermarketId, @RequestParam List<String> itemIDs,
                                                                @RequestParam String type,
                                                                @RequestParam(required = false) Double cashAmount) {
         if(!type.equals("CASH") && !type.equals("CARD")){

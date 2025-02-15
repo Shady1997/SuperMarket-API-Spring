@@ -13,7 +13,10 @@ import java.time.LocalDate;
 public class PurchaseDTO {
     @NotNull
     private Double price;
+
+    @NotNull
     private Double change;
+
     @NotNull
     private LocalDate timeOfPayment;
 }

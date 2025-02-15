@@ -3,6 +3,7 @@ package com.example.supermarketapi.service.impl;
 import com.example.supermarketapi.dto.AddItemsToSupermarketResponseDTO;
 import com.example.supermarketapi.dto.SupermarketInfoDTO;
 import com.example.supermarketapi.exception.DuplicateSupermarketNameException;
+import com.example.supermarketapi.exception.InvalidDataException;
 import com.example.supermarketapi.exception.SupermarketNotFoundException;
 import com.example.supermarketapi.model.Item;
 import com.example.supermarketapi.model.Supermarket;
@@ -71,5 +72,66 @@ public class SupermarketServiceImpl implements SupermarketService {
         supermarketInfoDTO.setWorkHours(supermarket.getWorkHours());
         supermarketInfoDTO.setItems(new ArrayList<>(supermarket.getItems()));
         return supermarketInfoDTO;
+    }
+
+    @Override
+    public Supermarket updateSupermarket(String supermarketId, Supermarket supermarket) {
+        Supermarket existingSupermarket = supermarketRepository.findById(supermarketId).orElseThrow(
+                () -> new SupermarketNotFoundException(supermarketId)
+        );
+
+        if (supermarket.getName() == null || supermarket.getAddress() == null || supermarket.getPhoneNumber() == null || supermarket.getWorkHours() == null) {
+            throw new InvalidDataException("There is a missing field while updating the supermarket!");
+        }
+
+        existingSupermarket.setName(supermarket.getName());
+        existingSupermarket.setAddress(supermarket.getAddress());
+        existingSupermarket.setPhoneNumber(supermarket.getPhoneNumber());
+        existingSupermarket.setWorkHours(supermarket.getWorkHours());
+
+        return supermarketRepository.save(existingSupermarket);
+    }
+
+    @Override
+    public Supermarket partialUpdateSupermarket(String supermarketId, Supermarket supermarket) {
+        Supermarket existingSupermarket = supermarketRepository.findById(supermarketId).orElseThrow(
+                () -> new SupermarketNotFoundException(supermarketId)
+        );
+
+        if (supermarket.getName() != null) {
+            existingSupermarket.setName(supermarket.getName());
+        }
+        if (supermarket.getAddress() != null) {
+            existingSupermarket.setAddress(supermarket.getAddress());
+        }
+        if (supermarket.getPhoneNumber() != null) {
+            existingSupermarket.setPhoneNumber(supermarket.getPhoneNumber());
+        }
+        if (supermarket.getWorkHours() != null) {
+            existingSupermarket.setWorkHours(supermarket.getWorkHours());
+        }
+
+        return supermarketRepository.save(existingSupermarket);
+    }
+
+    @Override
+    public void deleteSupermarket(String supermarketId) {
+        Supermarket supermarket = supermarketRepository.findById(supermarketId).orElseThrow(
+                () -> new SupermarketNotFoundException(supermarketId)
+        );
+        supermarketRepository.delete(supermarket);
+    }
+
+    @Override
+    public List<Supermarket> getAllSupermarkets() {
+        return supermarketRepository.findAll();
+    }
+
+    // New method to get a supermarket by ID
+    @Override
+    public Supermarket getSupermarket(String supermarketId) {
+        return supermarketRepository.findById(supermarketId).orElseThrow(
+                () -> new SupermarketNotFoundException(supermarketId)
+        );
     }
 }
