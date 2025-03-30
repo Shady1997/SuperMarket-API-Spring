@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getterselect
+@Getter
 @Setter
 public class Supermarket extends BaseEntity {
 
